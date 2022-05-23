@@ -46,3 +46,33 @@ Output:
 - `results/histologies-formatted-id-added.tsv`
 
 The output files are directly uploaded to S3 buckets for loading into PedCBio.
+
+## Histology-to-cBio data_clinical_patient.txt and data_clinical_sample.txt
+This script is used take in the modified histologies file created by this module and convert to a format ingestable by the cBioportal ETL
+
+clinical_to_datasheets.py
+ ```
+usage: clinical_to_datasheets.py [-h] [-f HEAD] [-c CLIN] [-s CL_SUPP]
+
+Script to convert clinical data to cbio clinical data sheets
+
+optional arguments:
+  -h, --help            show this help message and exit
+  -f HEAD, --header-file HEAD
+                        tsv file with input file original sample names, output
+                        sheet flag, and conversion
+  -c CLIN, --clinical-data CLIN
+                        Input clinical data sheet
+  -s CL_SUPP, --cell-line-supplement CL_SUPP
+                        supplemental file with cell line meta data - bs
+                        id<tab>type. optional
+ ```
+ - `-f` Header file example can be found here: `analyses/pedcbio-sample-name/header_desc.tsv`
+ - `-c` `histologies.tsv`
+
+The `-s` input can be skipped, as this ends up being covered by the input provided to the module for `input/cbtn_cbio_sample.csv`.
+Outputs a `data_clinical_sample.txt` and `data_clinical_patient.txt` for the cBio package, and a `bs_id_sample_map.txt` mapping file to link BS IDs to generated cBioPortal IDs based on the rules for creating a proper somatic event using column `parent_aliquot_id`
+
+
+Example run:
+`python3 analyses/pedcbio-sample-name/clinical_to_datasheets.py -f analyses/pedcbio-sample-name/header_desc.tsv  -c histologies.tsv`
