@@ -30,7 +30,7 @@ homologs="${data_path}/Gene_ID_Matches.tsv"
 
 out_name_all="results"_${name_wf1}"_"${name_wf2}"_comparison"
 out_name_homologs="results_"${name_wf1}"_"${name_wf2}"_homologs_comparison"
-#out_name_tpm_threshold="results_"${name_wf1}"_"${name_wf2}"_tpm_threshold"
+out_name_tpm_threshold="results_"${name_wf1}"_"${name_wf2}"_tpm_threshold"
 
 #Run QC and comparison on the input RNA-Seq counts files
 Rscript 01-pipeline-comparison-all-genes.R --wf1_name $name_wf1 \
@@ -51,4 +51,10 @@ Rscript 02-pipeline-comparison-mouse-homologs.R --wf1_name $name_wf1 \
 --output_filename $out_name_homologs
 
 
-
+#Run QC and comparison on the input RNA-Seq counts files
+Rscript 03-pipeline-comparison-tpm-threshold.R --wf1_name $name_wf1 \
+--wf1_file $counts_wf1 \
+--wf2_name $name_wf2 \
+--wf2_file $counts_wf2 \
+--input_homologs $homologs \
+--output_filename $out_name_tpm_threshold
